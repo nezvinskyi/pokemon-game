@@ -1,25 +1,20 @@
 import css from './Layout.module.css';
 
-const Layout = ({ title, descr, urlBg, colorBg }) => {
-  const inlineStyle = urlBg
-    ? {
-        background: `url(${urlBg})`,
-        backgroundSize: 'contain',
-        backgroundRepeat: 'no-repeat',
-      }
-    : { backgroundColor: colorBg };
+const Layout = ({ title, descr, urlBg = false, colorBg = false }) => {
+  const layoutStyle = {
+    backgroundImage: urlBg ? `url(${urlBg}` : null,
+    backgroundColor: colorBg,
+  };
 
   return (
-    <section className={css.root} style={inlineStyle}>
+    <section style={layoutStyle} className={css.root}>
       <div className={css.wrapper}>
         <article>
           <div className={css.title}>
-            <h3>{title}</h3>
-            <span className={css.separator}></span>
+            {title && <h3>{title}</h3>}
+            <span className={css.separator} />
           </div>
-          <div className={`${css.desc} ${css.full}`}>
-            <p>{descr}</p>
-          </div>
+          <div className={`${css.desc} ${css.full}`}>{descr && <p>{descr}</p>}</div>
         </article>
       </div>
     </section>
