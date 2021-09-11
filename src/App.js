@@ -1,17 +1,27 @@
+import React from 'react';
+
+import { Header, Layout, Footer, PokemonCard } from './components/';
+
+import POKEMONS from './data.json';
 import './App.css';
-import { Header, Layout, Footer } from './components';
-import bg1 from './assets/images/bg1.jpg';
-import bg3 from './assets/images/bg3.jpg';
+import bgImg1 from './assets/images/bg1.jpg';
+import bgImg3 from './assets/images/bg3.jpg';
 
 function App() {
   return (
-    <div className="App">
-      <Header title="This is title" descr="This is Description" />
-      <Layout title="This is title" descr="This is Description" urlBg={bg1} />
-      <Layout title="This is title" descr="This is Description" colorBg="#e2e2e2" />
-      <Layout title="This is title" descr="This is Description" urlBg={bg3} />
+    <>
+      <Header title="This is title" descr="This is Description!" />
+      <Layout title="This is title" descr="This is Description!" urlBg={bgImg1} />
+      <Layout id="cards" title="Cards" colorTitle="#FEFEFE" colorBg="#202736">
+        <div className="flex">
+          {POKEMONS.map(item => (
+            <PokemonCard {...item} />
+          ))}
+        </div>
+      </Layout>
+      <Layout title="This is title" descr="This is Description!" urlBg={bgImg3} />
       <Footer />
-    </div>
+    </>
   );
 }
 

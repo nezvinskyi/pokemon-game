@@ -1,5 +1,6 @@
 import css from './Footer.module.css';
-const Footer = () => {
+
+const Footer = ({ title, descr }) => {
   return (
     <footer>
       <div className={css.wrapper}>

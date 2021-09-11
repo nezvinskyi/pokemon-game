@@ -1,11 +1,11 @@
 import css from './Header.module.css';
 
 const Header = ({ title, descr }) => (
-  <header>
-    <div class={css.forest}></div>
-    <div class={css.container}>
-      <h1>{title}</h1>
-      <p>{descr}</p>
+  <header className={css.root}>
+    <div className={css.forest}></div>
+    <div className={css.container}>
+      {title && <h1>{title}</h1>}
+      {descr && <p>{descr}</p>}
     </div>
   </header>
 );
