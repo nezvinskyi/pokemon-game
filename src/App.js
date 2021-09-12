@@ -24,7 +24,14 @@ function App() {
       <Layout id="cards" title="Cards" colorTitle="#FEFEFE" colorBg="#202736">
         <div className="flex">
           {POKEMONS.map(item => (
-            <PokemonCard key={item.id} {...item} />
+            <PokemonCard
+              key={item.id}
+              name={item.name}
+              id={item.id}
+              type={item.type}
+              values={item.values}
+              img={item.img}
+            />
           ))}
         </div>
       </Layout>
@@ -45,6 +52,3 @@ function App() {
 }
 
 export default App;
-
-//  {POKEMONS.map(({ name, id, type, values, img }) => (
-//     <PokemonCard key={id} name={name} id={id} type={type} values={values} img={img} />

@@ -13,7 +13,7 @@ const PokemonCard = ({ name, id, type, values, img }) => {
       <div className={`${css.pokemonCard} ${isActive ? css.active : ''}`}>
         <div className={css.cardFront}>
           <div className={`${css.wrap} ${css.front}`}>
-            <div className={`${css.pokemon} ${type}`}>
+            <div className={`${css.pokemon} ${css[type]}`}>
               <div className={css.values}>
                 <div className={`${css.count} ${css.top}`}>{values.top}</div>
                 <div className={`${css.count} ${css.right}`}>{values.right}</div>
