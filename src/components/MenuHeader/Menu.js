@@ -1,14 +1,15 @@
 import cn from 'classnames';
+import { Link } from 'react-router-dom';
 import css from './Menu.module.css';
 
 const MENU = [
-	{ title: 'HOME', to: '#welcome' },
-	{ title: 'GAME', to: '#game' },
-	{ title: 'ABOUT', to: '#about' },
-	{ title: 'CONTACT', to: '#contact' },
+	{ title: 'HOME', to: '/' },
+	{ title: 'GAME', to: '/game' },
+	{ title: 'ABOUT', to: '/about' },
+	{ title: 'CONTACT', to: '/contact' },
 ];
 
-const Menu = ({ isMenuOpen }) => (
+const Menu = ({ isMenuOpen, onClickMenu }) => (
 	<div
 		className={cn(css.menuContainer, {
 			[css.active]: isMenuOpen === true,
@@ -20,7 +21,9 @@ const Menu = ({ isMenuOpen }) => (
 			<ul>
 				{MENU.map(({ title, to }) => (
 					<li key={title}>
-						<a href={to}>{title}</a>
+						<Link to={to} onClick={onClickMenu}>
+							{title}
+						</Link>
 					</li>
 				))}
 			</ul>
