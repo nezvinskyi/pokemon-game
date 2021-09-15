@@ -1,25 +1,17 @@
 /* eslint-disable no-unused-expressions */
-// import css from './HomePage.module.css';
+import css from './HomePage.module.css';
 
-import { Header, MenuHeader, Layout, Footer, PokemonCard } from '../../components';
+import { Header, Layout, Footer, PokemonCard } from '../../components';
 
 import POKEMONS from '../../data.json';
 
 import bgImg1 from '../../assets/images/bg1.jpg';
 import bgImg3 from '../../assets/images/bg3.jpg';
 
-function HomePage({ onChangePage }) {
-	const handleClickButton = (page) => {
-		onChangePage && onChangePage(page);
-	};
+function HomePage() {
 	return (
 		<>
-			<MenuHeader />
-			<Header
-				title="This is title"
-				descr="This is Description!"
-				onClickButton={handleClickButton}
-			/>
+			<Header title="This is title" descr="This is Description!" />
 			<Layout title="This is title" urlBg={bgImg1}>
 				<p>
 					In the game two players face off against one another, one side playing
@@ -31,7 +23,7 @@ function HomePage({ onChangePage }) {
 				</p>
 			</Layout>
 			<Layout id="cards" title="Cards" colorTitle="#FEFEFE" colorBg="#202736">
-				<div className="flex">
+				<div className={css.flex}>
 					{POKEMONS.map((item) => (
 						<PokemonCard
 							key={item.id}
