@@ -5,7 +5,6 @@ import css from './PokemonCard.module.css';
 
 const PokemonCard = ({ name, id, type, values, img, onClick, isActive }) => (
 	<div className={css.root} onClick={onClick}>
-		{/* <div className={css.root}> */}
 		<div className={cn(css.pokemonCard, { [css.active]: isActive })}>
 			<div className={css.cardFront}>
 				<div className={cn(css.wrap, css.front)}>
