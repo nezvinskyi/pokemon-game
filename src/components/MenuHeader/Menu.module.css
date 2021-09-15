@@ -60,11 +60,11 @@
 }
 
 .menuContainer::before {
-	background: url('../../assets/images/Stars.svg');
+	background: url('../../assets/images/stars.svg');
 }
 
 .menuContainer::after {
-	background: url('../../assets/images/Trees.svg') bottom repeat-x;
+	background: url('../../assets/images/trees.svg') bottom repeat-x;
 }
 
 .menuContainer.deactive {
