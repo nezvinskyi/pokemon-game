@@ -10,8 +10,8 @@ const GamePage = () => {
 	const history = useHistory();
 
 	const handleCardClick = (id) => {
-		setPokemons((prevState) =>
-			[...prevState].map((item) => {
+		setPokemons(
+			pokemons.map((item) => {
 				if (item.id === id) {
 					Object.assign(item, { isActive: !item.isActive });
 				}
