@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Btn, Layout, PokemonCard } from '../../components';
@@ -14,7 +13,7 @@ const GamePage = () => {
 		setPokemons((prevState) =>
 			[...prevState].map((item) => {
 				if (item.id === id) {
-					item.isActive = !item.isActive;
+					Object.assign(item, { isActive: !item.isActive });
 				}
 				return item;
 			}),
