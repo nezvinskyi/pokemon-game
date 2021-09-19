@@ -1,23 +1,34 @@
 /* eslint-disable no-shadow */
-import { useState } from 'react';
+import { useRouteMatch, Switch, Route, Redirect } from 'react-router-dom';
+import cn from 'classnames';
 
-import { GamePage, HomePage } from './routes';
-import './App.css';
+import { About, Contact, GamePage, HomePage, NotFound } from './routes';
+import { Footer, MenuHeader } from './components';
+
+import css from './App.module.css';
 
 const App = () => {
-	const [page, setPage] = useState('app');
-
-	const handleChangePage = (page) => {
-		setPage(page);
-	};
-	switch (page) {
-		case 'app':
-			return <HomePage onChangePage={handleChangePage} />;
-		case 'game':
-			return <GamePage />;
-		default:
-			return <HomePage />;
-	}
+	const match = useRouteMatch('/');
+	return (
+		<Switch>
+			<Route path="/404" component={NotFound} />
+			<Route>
+				<>
+					<MenuHeader bgActive={!match.isExact} />
+					<div className={cn(css.wrap, { [css.isHomePage]: match.isExact })}>
+						<Switch>
+							<Route path="/" exact component={HomePage} />
+							<Route path="/home" component={HomePage} />
+							<Route path="/game" component={GamePage} />
+							<Route path="/about" component={About} />
+							<Route path="/contact" component={Contact} />
+							<Route render={() => <Redirect to="/404" />} />
+						</Switch>
+					</div>
+					<Footer />
+				</>
+			</Route>
+		</Switch>
+	);
 };
-
 export default App;
