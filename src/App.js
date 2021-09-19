@@ -5,7 +5,13 @@ import cn from 'classnames';
 import { About, Contact, GamePage, HomePage, NotFound } from './routes';
 import { Footer, MenuHeader } from './components';
 
+// import database from './service/firebase';
+
 import css from './App.module.css';
+
+// database.ref('pokemons').once('value', (snapshot) => {
+// 	console.log('snapshot.val() :>> ', snapshot.val());
+// });
 
 const App = () => {
 	const match = useRouteMatch('/');

@@ -1,22 +1,33 @@
-import { useState } from 'react';
+/* eslint-disable no-console */
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Btn, Layout, PokemonCard } from '../../components';
-import POKEMONS from '../../data.json';
+// import POKEMONS from '../../data.json';
+import database from '../../service/firebase';
 
 import css from './GamePage.module.css';
 
 const GamePage = () => {
-	const [pokemons, setPokemons] = useState(POKEMONS);
 	const history = useHistory();
+	const [pokemons, setPokemons] = useState({});
+
+	useEffect(() => {
+		database.ref('pokemons').once('value', (snapshot) => {
+			setPokemons(snapshot.val());
+		});
+	}, []);
 
 	const handleCardClick = (id) => {
-		setPokemons(
-			pokemons.map((item) => {
-				if (item.id === id) {
-					Object.assign(item, { isActive: !item.isActive });
+		setPokemons((prevState) =>
+			Object.entries(prevState).reduce((acc, item) => {
+				const pokemon = { ...item[1] };
+				if (pokemon.id === id) {
+					pokemon.isActive = !item[1].isActive;
+					database.ref(`pokemons/${item[0]}`).set({ ...pokemon });
 				}
-				return item;
-			}),
+				acc[item[0]] = pokemon;
+				return acc;
+			}, {}),
 		);
 	};
 
@@ -29,9 +40,9 @@ const GamePage = () => {
 			<h1>This is Game Page</h1>
 			<Layout id="cards" title="Cards" colorTitle="#FEFEFE" colorBg="#202736">
 				<div className={css.flex}>
-					{pokemons.map(({ id, name, type, values, img, isActive }) => (
+					{Object.entries(pokemons).map(([key, { id, name, type, values, img, isActive }]) => (
 						<PokemonCard
-							key={id}
+							key={key}
 							name={name}
 							id={id}
 							type={type}
