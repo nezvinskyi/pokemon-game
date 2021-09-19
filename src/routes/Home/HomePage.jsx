@@ -1,14 +1,22 @@
 /* eslint-disable no-unused-expressions */
-import css from './HomePage.module.css';
-
+import { useEffect, useState } from 'react';
 import { Header, Layout, Footer, PokemonCard } from '../../components';
 
-import POKEMONS from '../../data.json';
+import database from '../../service/firebase';
 
 import bgImg1 from '../../assets/images/bg1.jpg';
 import bgImg3 from '../../assets/images/bg3.jpg';
 
+import css from './HomePage.module.css';
+
 function HomePage() {
+	const [pokemons, setPokemons] = useState({});
+	useEffect(() => {
+		database.ref('pokemons').once('value', (snapshot) => {
+			setPokemons(snapshot.val());
+		});
+	}, []);
+
 	return (
 		<>
 			<Header title="This is title" descr="This is Description!" />
@@ -24,15 +32,8 @@ function HomePage() {
 			</Layout>
 			<Layout id="cards" title="Cards" colorTitle="#FEFEFE" colorBg="#202736">
 				<div className={css.flex}>
-					{POKEMONS.map((item) => (
-						<PokemonCard
-							key={item.id}
-							name={item.name}
-							id={item.id}
-							type={item.type}
-							values={item.values}
-							img={item.img}
-						/>
+					{Object.entries(pokemons).map(([key, { id, name, type, values, img }]) => (
+						<PokemonCard key={key} name={name} id={id} type={type} values={values} img={img} />
 					))}
 				</div>
 			</Layout>
