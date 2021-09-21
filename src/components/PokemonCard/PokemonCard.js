@@ -1,11 +1,30 @@
 import cn from 'classnames';
-import cardBck from '../../assets/images/card-back-side.jpg';
 
 import css from './PokemonCard.module.css';
 
-const PokemonCard = ({ name, id, type, values, img, onClick, isActive }) => (
-	<div className={css.root} onClick={onClick}>
-		<div className={cn(css.pokemonCard, { [css.active]: isActive })}>
+const PokemonCard = ({
+	className,
+	name,
+	id,
+	type,
+	values,
+	img,
+	minimize,
+	onClickCard,
+	isActive,
+	isSelected,
+}) => {
+	const handleClick = () => {
+		onClickCard && onClickCard(id);
+	};
+	return (
+		<div
+			className={cn(className, css.pokemonCard, {
+				[css.active]: isActive,
+				[css.selected]: isSelected,
+			})}
+			onClick={handleClick}
+		>
 			<div className={css.cardFront}>
 				<div className={cn(css.wrap, css.front)}>
 					<div className={cn(css.pokemon, css[type])}>
@@ -18,24 +37,24 @@ const PokemonCard = ({ name, id, type, values, img, onClick, isActive }) => (
 						<div className={css.imgContainer}>
 							<img src={img} alt={name} />
 						</div>
-						<div className={css.info}>
-							<span className={css.number}>#{id}</span>
-							<h3 className={css.name}>{name}</h3>
-							<small className={type}>
-								Type: <span>{type}</span>
-							</small>
-						</div>
+						{!minimize && (
+							<div className={css.info}>
+								<span className={css.number}>#{id}</span>
+								<h3 className={css.name}>{name}</h3>
+								<small className={css.type}>
+									Type: <span>{type}</span>
+								</small>
+							</div>
+						)}
 					</div>
 				</div>
 			</div>
 
 			<div className={css.cardBack}>
-				<div className={cn(css.wrap, css.back)}>
-					<img src={cardBck} alt="Сard Backed" />
-				</div>
+				<div className={cn(css.wrap, css.back)} />
 			</div>
 		</div>
-	</div>
-);
+	);
+};
 
 export default PokemonCard;
