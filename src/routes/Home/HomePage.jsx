@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Header, Layout, Footer, PokemonCard } from '../../components';
 
-import database from '../../service/firebase';
+// import database from '../../service/firebase';
 
 import bgImg1 from '../../assets/images/bg1.jpg';
 import bgImg3 from '../../assets/images/bg3.jpg';
@@ -10,11 +10,11 @@ import bgImg3 from '../../assets/images/bg3.jpg';
 import css from './HomePage.module.css';
 
 function HomePage() {
-	const [pokemons, setPokemons] = useState({});
+	const [pokemons] = useState({});
 	useEffect(() => {
-		database.ref('pokemons').once('value', (snapshot) => {
-			setPokemons(snapshot.val());
-		});
+		// database.ref('pokemons').once('value', (snapshot) => {
+		// 	setPokemons(snapshot.val());
+		// });
 	}, []);
 
 	return (

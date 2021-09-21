@@ -11,6 +11,8 @@ const Header = ({ title, descr }) => {
 	return (
 		<header className={css.root}>
 			<div className={css.forest} />
+			<div className={css.moon} />
+			<div className={css.silhouette} />
 			<div className={css.container}>
 				{title && <h1>{title}</h1>}
 				{descr && <p>{descr}</p>}
