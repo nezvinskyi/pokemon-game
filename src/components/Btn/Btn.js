@@ -1,5 +1,5 @@
-const Btn = ({ title, onClick }) => (
-	<button type="button" onClick={onClick}>
+const Btn = ({ title, onClick, disabled }) => (
+	<button type="button" onClick={onClick} disabled={disabled}>
 		{title}
 	</button>
 );

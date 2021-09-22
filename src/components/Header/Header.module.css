@@ -12,7 +12,7 @@
 .root::before {
 	content: '';
 	position: fixed;
-	background: url('../../assets/images/stars.svg');
+	background: url(../../assets/images/Stars.svg);
 	background-attachment: fixed;
 	width: 100%;
 	min-height: 100vh;
@@ -35,7 +35,7 @@
 	position: absolute;
 	bottom: -300px;
 	left: 0;
-	background: url('../../assets/images/trees.svg') bottom left repeat-x;
+	background: url(../../assets/images/Trees.svg) bottom left repeat-x;
 	background-size: cover;
 	width: 100%;
 	height: 80%;
@@ -58,7 +58,7 @@
 	position: absolute;
 	bottom: 0;
 	left: 0;
-	background: url('../../assets/images/silhouette.svg') bottom left no-repeat;
+	background: url(../../assets/images/silhouette.svg) bottom left no-repeat;
 	width: 50%;
 	height: 50%;
 	opacity: 0;
@@ -80,7 +80,7 @@
 	top: 0;
 	right: 0;
 	position: fixed;
-	background: url('../../assets/images/bg1.jpg') right 150% no-repeat;
+	background: url(../../assets/images/moon.svg) right 150% no-repeat;
 	background-size: 30% 30%;
 	background-attachment: fixed;
 	width: 100%;
