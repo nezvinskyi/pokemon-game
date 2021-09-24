@@ -5,5 +5,6 @@ import Footer from './Footer';
 import Btn from './Btn/Btn';
 
 import PokemonCard from './PokemonCard';
+import PlayerBoard from './PlayerBoard';
 
-export { Header, MenuHeader, Layout, Footer, PokemonCard, Btn };
+export { Header, MenuHeader, Layout, Footer, PokemonCard, Btn, PlayerBoard };
