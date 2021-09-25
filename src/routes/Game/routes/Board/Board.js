@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-alert */
 /* eslint-disable no-plusplus */
 /* eslint-disable react/jsx-props-no-spreading */
@@ -23,7 +24,7 @@ const counterWin = (board, player1, player2) => {
 };
 
 const BoardPage = () => {
-	const { pokemons, setGameResults } = useContext(PokemonsContext);
+	const { pokemons, setPlayer1Pokemons, setPlayer2Pokemons } = useContext(PokemonsContext);
 
 	const [board, setBoard] = useState([]);
 	const [player1, setPlayer1] = useState(() =>
@@ -94,11 +95,20 @@ const BoardPage = () => {
 		if (steps === 9) {
 			const [count1, count2] = counterWin(board, player1, player2);
 
-			const myPokemons = board.filter((item) => item.card.possession === 'blue');
+			const player1Pokemons = [];
+			const player2Pokemons = [];
 
-			const herPokemons = board.filter((item) => item.card.possession === 'red');
+			board.forEach((item) => {
+				if (item.card.possession === 'blue') {
+					player1Pokemons.push(item.card);
+				}
+				if (item.card.possession === 'red') {
+					player2Pokemons.push(item.card);
+				}
+			});
 
-			setGameResults({ myPokemons, herPokemons });
+			setPlayer1Pokemons(player1Pokemons);
+			setPlayer2Pokemons(player2Pokemons);
 
 			history.push('/game/finish');
 
