@@ -5,7 +5,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { PokemonsContext } from '../../../../context/pokemonsContext';
-import { PokemonCard, PlayerBoard } from '../../../../components';
+import { PokemonCard, PlayerBoard, Result } from '../../../../components';
 import css from './Board.module.css';
 
 const counterWin = (board, player1, player2) => {
@@ -36,6 +36,7 @@ const BoardPage = () => {
 	const [player2, setPlayer2] = useState([]);
 	const [choiceCard, setChoiceCard] = useState(null);
 	const [steps, setSteps] = useState(0);
+	const [result, setResult] = useState(null);
 
 	const history = useHistory();
 
@@ -91,6 +92,10 @@ const BoardPage = () => {
 		}
 	};
 
+	const handleResultClick = () => {
+		history.push('/game/finish');
+	};
+
 	useEffect(() => {
 		if (steps === 9) {
 			const [count1, count2] = counterWin(board, player1, player2);
@@ -110,15 +115,12 @@ const BoardPage = () => {
 			setPlayer1Pokemons(player1Pokemons);
 			setPlayer2Pokemons(player2Pokemons);
 
-			history.push('/game/finish');
-
 			if (count1 > count2) {
-				alert('player1 :>> ', player1);
-				alert('WIN');
+				setResult('win');
 			} else if (count1 < count2) {
-				alert('Lost');
+				setResult('lose');
 			} else {
-				alert('Draw');
+				setResult('draw');
 			}
 		}
 	}, [steps]);
@@ -145,7 +147,6 @@ const BoardPage = () => {
 					</div>
 				))}
 			</div>
-
 			<div className={css.playerTwo}>
 				<PlayerBoard
 					player={2}
@@ -155,6 +156,7 @@ const BoardPage = () => {
 					}}
 				/>
 			</div>
+			{result && <Result type={result} onClick={handleResultClick} />}
 		</div>
 	);
 };
