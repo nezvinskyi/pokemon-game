@@ -38,13 +38,22 @@ const BoardPage = () => {
 	const [steps, setSteps] = useState(0);
 	const [result, setResult] = useState(null);
 	const [side, setSide] = useState(0);
+	const [stop, setStop] = useState(false);
 
 	const history = useHistory();
 
-	const selectSide = () => {
-		if (Math.random() < 0.5) {
-			setSide(1);
-		} else setSide(2);
+	const animateArrow = () => {
+		let selectSide = null;
+
+		setTimeout(() => {
+			clearInterval(selectSide);
+		}, 3000);
+
+		selectSide = setInterval(async () => {
+			if (Math.random() < 0.5) {
+				await setSide(1);
+			} else await setSide(2);
+		}, 500);
 	};
 
 	useEffect(async () => {
@@ -62,7 +71,7 @@ const BoardPage = () => {
 				possession: 'red',
 			})),
 		);
-		selectSide();
+		await animateArrow();
 	}, []);
 
 	if (Object.keys(pokemons).length === 0) {
@@ -97,6 +106,7 @@ const BoardPage = () => {
 
 			setBoard(request.data);
 			setSteps((prevState) => prevState + 1);
+			setChoiceCard(null);
 		}
 	};
 
@@ -140,8 +150,9 @@ const BoardPage = () => {
 					player={1}
 					cards={player1}
 					onClickCard={(card) => {
+						setStop(true);
 						(side === 1 || side === 0) && setChoiceCard(card);
-						setSide(0);
+						setSide(2);
 					}}
 				/>
 			</div>
@@ -161,13 +172,14 @@ const BoardPage = () => {
 					player={2}
 					cards={player2}
 					onClickCard={(card) => {
+						setStop(true);
 						(side === 2 || side === 0) && setChoiceCard(card);
-						setSide(0);
+						setSide(1);
 					}}
 				/>
 			</div>
 			{result && <Result type={result} onClick={handleResultClick} />}
-			{side !== 0 && <ArrowChoice side={side} />}
+			{stop === false && <ArrowChoice side={side} stop={stop} />}
 		</div>
 	);
 };
