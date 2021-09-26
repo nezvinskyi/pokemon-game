@@ -6,5 +6,6 @@ import Btn from './Btn';
 import Result from './Result';
 import PokemonCard from './PokemonCard';
 import PlayerBoard from './PlayerBoard';
+import ArrowChoice from './ArrowChoice';
 
-export { Header, MenuHeader, Layout, Footer, PokemonCard, Btn, PlayerBoard, Result };
+export { Header, MenuHeader, Layout, Footer, PokemonCard, Btn, PlayerBoard, Result, ArrowChoice };

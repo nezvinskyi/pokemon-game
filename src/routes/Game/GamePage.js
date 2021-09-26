@@ -24,6 +24,12 @@ const GamePage = () => {
 		});
 	};
 
+	const clearContext = () => {
+		setSelectedPokemons({});
+		setPlayer1Pokemons([]);
+		setPlayer2Pokemons([]);
+	};
+
 	const gameOver = player1Pokemons.length + player2Pokemons.length === 9;
 
 	return (
@@ -36,6 +42,7 @@ const GamePage = () => {
 				player2Pokemons,
 				setPlayer1Pokemons,
 				setPlayer2Pokemons,
+				clearContext,
 			}}
 		>
 			<Switch>

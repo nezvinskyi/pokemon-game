@@ -5,7 +5,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { PokemonsContext } from '../../../../context/pokemonsContext';
-import { PokemonCard, PlayerBoard, Result } from '../../../../components';
+import { PokemonCard, PlayerBoard, Result, ArrowChoice } from '../../../../components';
 import css from './Board.module.css';
 
 const counterWin = (board, player1, player2) => {
@@ -37,8 +37,15 @@ const BoardPage = () => {
 	const [choiceCard, setChoiceCard] = useState(null);
 	const [steps, setSteps] = useState(0);
 	const [result, setResult] = useState(null);
+	const [side, setSide] = useState(0);
 
 	const history = useHistory();
+
+	const selectSide = () => {
+		if (Math.random() < 0.5) {
+			setSide(1);
+		} else setSide(2);
+	};
 
 	useEffect(async () => {
 		const boardResponse = await fetch('https://reactmarathon-api.netlify.app/api/board');
@@ -55,6 +62,7 @@ const BoardPage = () => {
 				possession: 'red',
 			})),
 		);
+		selectSide();
 	}, []);
 
 	if (Object.keys(pokemons).length === 0) {
@@ -132,7 +140,8 @@ const BoardPage = () => {
 					player={1}
 					cards={player1}
 					onClickCard={(card) => {
-						setChoiceCard(card);
+						(side === 1 || side === 0) && setChoiceCard(card);
+						setSide(0);
 					}}
 				/>
 			</div>
@@ -152,11 +161,13 @@ const BoardPage = () => {
 					player={2}
 					cards={player2}
 					onClickCard={(card) => {
-						setChoiceCard(card);
+						(side === 2 || side === 0) && setChoiceCard(card);
+						setSide(0);
 					}}
 				/>
 			</div>
 			{result && <Result type={result} onClick={handleResultClick} />}
+			{side !== 0 && <ArrowChoice side={side} />}
 		</div>
 	);
 };

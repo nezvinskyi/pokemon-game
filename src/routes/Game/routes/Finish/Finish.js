@@ -7,20 +7,15 @@ import { Btn, PokemonCard } from '../../../../components';
 import css from './Finish.module.css';
 
 const Finish = () => {
-	const {
-		player1Pokemons,
-		player2Pokemons,
-		setPlayer1Pokemons,
-		setPlayer2Pokemons,
-		setSelectedPokemons,
-	} = useContext(PokemonsContext);
+	const { player1Pokemons, player2Pokemons, setPlayer2Pokemons, clearContext } =
+		useContext(PokemonsContext);
 	const firebase = useContext(FireBaseContext);
 	const [rewardCard, setRewardCard] = useState({});
 	const history = useHistory();
 
-	const handleCardClick = (id) => {
-		const isPlayer1Lost = player1Pokemons.length < player2Pokemons.length;
+	const isPlayer1Lost = player1Pokemons.length < player2Pokemons.length;
 
+	const handleCardClick = (id) => {
 		if (isPlayer1Lost) return;
 
 		const newState = [...player2Pokemons].map((item) => {
@@ -37,10 +32,9 @@ const Finish = () => {
 	};
 
 	const handleFinishGameClick = async () => {
-		rewardCard && (await firebase.postPokemon(rewardCard));
-		setPlayer1Pokemons([]);
-		setPlayer2Pokemons([]);
-		setSelectedPokemons({});
+		await firebase.postPokemon(rewardCard);
+
+		clearContext();
 		history.replace('/game');
 	};
 
@@ -62,7 +56,11 @@ const Finish = () => {
 				))}
 			</div>
 			<div className={css.buttonWrap}>
-				<Btn title="Finish Game" onClick={handleFinishGameClick} />
+				<Btn
+					title={isPlayer1Lost ? 'Finish Game' : 'Select pokemon and hit finish'}
+					onClick={handleFinishGameClick}
+					disabled={!isPlayer1Lost && Object.keys(rewardCard).length === 0}
+				/>
 			</div>
 			<div className={css.herPokemonsWraper}>
 				{player2Pokemons.map(({ id, name, img, type, values, selected }) => (
