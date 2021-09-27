@@ -18,35 +18,36 @@ class Firebase {
 		this.database = this.fire.database();
 	}
 
-	getPokemonSocket = (cb) => {
+	getPokemonSocket(cb) {
 		this.database.ref('pokemons').on('value', (snapshot) => {
 			cb(snapshot.val());
 		});
-	};
+	}
 
-	offPokemonSocket = () => {
+	offPokemonSocket() {
 		this.database.ref('pokemons').off();
-	};
+	}
 
-	getPokemonsOnce = async () => {
+	async getPokemonsOnce() {
 		const response = await this.database
 			.ref('pokemons')
 			.once('value')
 			.then((snapshot) => snapshot.val());
 		return response;
-	};
+	}
 
-	postPokemon = async (key, pokemon) => {
-		this.database.ref(`pokemons/${key}`).set(pokemon);
-	};
+	async postPokemon(pokemon) {
+		const newKey = this.database.ref().child('pokemons').push().key;
+		this.database.ref(`pokemons/${newKey}`).set(pokemon);
+	}
 
-	addPokemon = (data, cb) => {
+	addPokemon(data, cb) {
 		const newKey = this.database.ref().child('pokemons').push().key;
 		this.database
 			.ref(`pokemons/${newKey}`)
 			.set(data)
 			.then(() => cb());
-	};
+	}
 }
 
 export default Firebase;

@@ -14,12 +14,6 @@ const StartPage = () => {
 	const history = useHistory();
 	const pokemonsContext = useContext(PokemonsContext);
 	const [pokemons, setPokemons] = useState({});
-	// console.log('firebase :>> ', firebase);
-
-	// const getPokemons = async () => {
-	// 	const response = await firebase.getPokemonsOnce();
-	// 	setPokemons(response);
-	// };
 
 	useEffect(() => {
 		firebase.getPokemonSocket((pokemons) => {
