@@ -1,31 +1,34 @@
 /* eslint-disable react/jsx-boolean-value */
 /* eslint-disable no-shadow */
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Btn, Layout, PokemonCard } from '../../../../components';
-// import database from '../../service/firebase';
-// import newPokemon from '../../../../data.json';
-import { FireBaseContext } from '../../../../context/FireBaseContext';
-import { PokemonsContext } from '../../../../context/pokemonsContext';
+import {
+	getPokemonsAsync,
+	selectPokemonsData,
+	selectPokemon,
+	selectSelectedPokemons,
+} from '../../../../redux/pokemons';
 import css from './StartPage.module.css';
 
 const StartPage = () => {
-	const firebase = useContext(FireBaseContext);
 	const history = useHistory();
-	const pokemonsContext = useContext(PokemonsContext);
+	const dispatch = useDispatch();
+	const pokemonsRedux = useSelector(selectPokemonsData);
+	const selectedPokemonsRedux = useSelector(selectSelectedPokemons);
 	const [pokemons, setPokemons] = useState({});
 
 	useEffect(() => {
-		firebase.getPokemonSocket((pokemons) => {
-			setPokemons(pokemons);
-		});
-
-		return () => firebase.offPokemonSocket();
+		dispatch(getPokemonsAsync());
 	}, []);
 
+	useEffect(() => {
+		setPokemons(pokemonsRedux);
+	}, [pokemonsRedux]);
+
 	const handleCardClick = (key) => {
-		const pokemon = { ...pokemons[key] };
-		pokemonsContext.onSelectedPokemons(key, pokemon);
+		dispatch(selectPokemon(key));
 
 		setPokemons((prevState) => ({
 			...prevState,
@@ -52,7 +55,7 @@ const StartPage = () => {
 					<Btn
 						title="Start Game"
 						onClick={handleStartGameClick}
-						disabled={Object.keys(pokemonsContext.pokemons).length < 5}
+						disabled={selectedPokemonsRedux.length < 5}
 					/>
 				</div>
 				<div className={css.flex}>
@@ -66,7 +69,7 @@ const StartPage = () => {
 							values={values}
 							img={img}
 							onClickCard={() => {
-								if (Object.keys(pokemonsContext.pokemons).length < 5 || selected) {
+								if (selectedPokemonsRedux.length < 5 || selected) {
 									handleCardClick(key);
 								}
 							}}
@@ -82,4 +85,5 @@ const StartPage = () => {
 		</div>
 	);
 };
+
 export default StartPage;
