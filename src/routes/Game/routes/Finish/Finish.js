@@ -1,19 +1,18 @@
 /* eslint-disable no-param-reassign */
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { FireBaseContext } from '../../../../context/FireBaseContext';
 import { Btn, PokemonCard } from '../../../../components';
-import css from './Finish.module.css';
+import FirebaseClass from '../../../../service/firebase';
 import {
 	selectPlayer1Pokemons,
 	selectPlayer2Pokemons,
 	setPlayer1Pokemons,
 	setPlayer2Pokemons,
 } from '../../../../redux/pokemons';
+import css from './Finish.module.css';
 
 const Finish = () => {
-	const firebase = useContext(FireBaseContext);
 	const [rewardCard, setRewardCard] = useState({});
 	const history = useHistory();
 	const dispatch = useDispatch();
@@ -49,7 +48,7 @@ const Finish = () => {
 	};
 
 	const handleFinishGameClick = async () => {
-		await firebase.postPokemon(rewardCard);
+		await FirebaseClass.postPokemon(rewardCard);
 		clearStore();
 		history.replace('/game');
 	};
