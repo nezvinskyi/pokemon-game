@@ -84,7 +84,7 @@ const MenuHeader = ({ bgActive }) => {
 			/>
 
 			<Modal isOpen={isOpenModal} title="Authentification" onCloseModal={handleClickLogin}>
-				<LoginForm onSubmit={handleSubmitLoginForm} />
+				<LoginForm onSubmit={handleSubmitLoginForm} isOpen={isOpenModal} />
 			</Modal>
 		</>
 	);

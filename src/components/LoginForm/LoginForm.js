@@ -1,15 +1,17 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Input from '../Input';
 import css from './LoginForm.module.css';
 
-const LoginForm = ({ onSubmit }) => {
+const LoginForm = ({ onSubmit, isOpen }) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [isToggleLogin, setToggleLogin] = useState(false);
 
-	// TODO
-	// Подумайте, как сделать так, чтобы при закрытии модального окна ваша форма очищалась и не хранила в себе состояние, которое было введено до этого.
+	useEffect(() => {
+		setEmail('');
+		setPassword('');
+	}, [isOpen]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
