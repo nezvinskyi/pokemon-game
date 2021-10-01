@@ -1,4 +1,6 @@
+/* eslint-disable no-prototype-builtins */
 import { useState } from 'react';
+import { NotificationManager } from 'react-notifications';
 import LoginForm from '../LoginForm';
 import Modal from '../Modal';
 import Menu from './Menu';
@@ -31,7 +33,11 @@ const MenuHeader = ({ bgActive }) => {
 			`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${REACT_APP_API}`,
 			requestOptions,
 		).then((res) => res.json());
-		console.log('response :>> ', response);
+		if (response.hasOwnProperty('error')) {
+			NotificationManager.error(response.error.message, 'Error!');
+		} else {
+			NotificationManager.success(`${response.email} successfully registered`, 'Success!');
+		}
 	};
 
 	return (
