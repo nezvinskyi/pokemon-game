@@ -8,7 +8,6 @@ import NavBar from './NavBar';
 
 const MenuHeader = ({ bgActive }) => {
 	const [isMenuOpen, setMenuOpen] = useState(null);
-
 	const [isOpenModal, setOpenModal] = useState(false);
 
 	const handleClickMenu = () => {
@@ -19,7 +18,7 @@ const MenuHeader = ({ bgActive }) => {
 		setOpenModal((prevState) => !prevState);
 	};
 
-	const handleSubmitLoginForm = async ({ email, password }) => {
+	const signUp = async ({ email, password }) => {
 		const { REACT_APP_API } = process.env;
 		const requestOptions = {
 			method: 'POST',
@@ -33,6 +32,36 @@ const MenuHeader = ({ bgActive }) => {
 			`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${REACT_APP_API}`,
 			requestOptions,
 		).then((res) => res.json());
+
+		return response;
+	};
+
+	const signIn = async ({ email, password }) => {
+		const { REACT_APP_API } = process.env;
+		const requestOptions = {
+			method: 'POST',
+			body: JSON.stringify({
+				email,
+				password,
+				returnSecureToken: true,
+			}),
+		};
+		const response = await fetch(
+			`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${REACT_APP_API}`,
+			requestOptions,
+		).then((res) => res.json());
+
+		return response;
+	};
+
+	const handleSubmitLoginForm = async ({ email, password, isToggleLogin }) => {
+		let response;
+		if (isToggleLogin) {
+			response = await signIn({ email, password });
+		} else {
+			response = await signUp({ email, password });
+		}
+
 		if (response.hasOwnProperty('error')) {
 			NotificationManager.error(response.error.message, 'Error!');
 		} else {
