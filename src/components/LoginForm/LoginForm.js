@@ -23,7 +23,7 @@ const LoginForm = ({ onSubmit }) => {
 				value={email}
 				name="email"
 				label="Email"
-				type="email"
+				// type="email"
 				onChange={(e) => {
 					setEmail(e.target.value);
 				}}

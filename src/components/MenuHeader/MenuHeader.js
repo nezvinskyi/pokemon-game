@@ -17,12 +17,21 @@ const MenuHeader = ({ bgActive }) => {
 		setOpenModal((prevState) => !prevState);
 	};
 
-	const handleSubmitLoginForm = async () => {
-		const { API } = process.env;
-		console.log('API :>> ', API);
-		// const response = await fetch(
-		// 	'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=<apiKey>',
-		// );
+	const handleSubmitLoginForm = async ({ email, password }) => {
+		const { REACT_APP_API } = process.env;
+		const requestOptions = {
+			method: 'POST',
+			body: JSON.stringify({
+				email,
+				password,
+				returnSecureToken: true,
+			}),
+		};
+		const response = await fetch(
+			`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${REACT_APP_API}`,
+			requestOptions,
+		).then((res) => res.json());
+		console.log('response :>> ', response);
 	};
 
 	return (
