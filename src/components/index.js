@@ -10,6 +10,7 @@ import ArrowChoice from './ArrowChoice';
 import Modal from './Modal';
 import LoginForm from './LoginForm';
 import Input from './Input';
+import PrivateRoute from './PrivateRoute';
 
 export {
 	Header,
@@ -24,4 +25,5 @@ export {
 	Modal,
 	LoginForm,
 	Input,
+	PrivateRoute,
 };
