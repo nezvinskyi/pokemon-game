@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import css from './Input.module.css';
 
 const Input = ({ value, label, type = 'text', name, onChange, required = true }) => (
@@ -7,7 +8,7 @@ const Input = ({ value, label, type = 'text', name, onChange, required = true })
 			name={name}
 			onChange={onChange}
 			type={type}
-			className={css.input}
+			className={cn(css.input, { [css.valid]: value })}
 			required={required}
 		/>
 		<span className={css.highlight} />
