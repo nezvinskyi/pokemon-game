@@ -1,7 +1,8 @@
 import { useSelector } from 'react-redux';
-import { Switch, Route, useRouteMatch, Redirect } from 'react-router-dom';
+import { Switch, useRouteMatch, Redirect } from 'react-router-dom';
 import { BoardPage, FinishPage, StartPage } from './routes';
 import { selectPlayer1Pokemons, selectPlayer2Pokemons } from '../../redux/pokemons';
+import { PrivateRoute } from '../../components';
 
 const GamePage = () => {
 	const match = useRouteMatch();
@@ -12,9 +13,9 @@ const GamePage = () => {
 
 	return (
 		<Switch>
-			<Route path={`${match.path}/`} exact component={StartPage} />
-			<Route path={`${match.path}/board`} component={BoardPage} />
-			<Route
+			<PrivateRoute path={`${match.path}/`} exact component={StartPage} />
+			<PrivateRoute path={`${match.path}/board`} component={BoardPage} />
+			<PrivateRoute
 				path={`${match.path}/finish`}
 				render={() => (gameOver ? <FinishPage /> : <Redirect to={`${match.path}/`} />)}
 			/>

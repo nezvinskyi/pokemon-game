@@ -67,6 +67,9 @@ const MenuHeader = ({ bgActive }) => {
 		} else {
 			localStorage.setItem('idToken', response.idToken);
 			NotificationManager.success(`${response.email} successfully registered`, 'Success!');
+			setTimeout(() => {
+				setOpenModal(false);
+			}, 2000);
 		}
 	};
 
@@ -80,7 +83,7 @@ const MenuHeader = ({ bgActive }) => {
 				bgActive={bgActive}
 			/>
 
-			<Modal isOpen={isOpenModal} title="Login in..." onCloseModal={handleClickLogin}>
+			<Modal isOpen={isOpenModal} title="Authentification" onCloseModal={handleClickLogin}>
 				<LoginForm onSubmit={handleSubmitLoginForm} />
 			</Modal>
 		</>
