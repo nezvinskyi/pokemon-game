@@ -2,8 +2,6 @@
 import { useEffect, useState } from 'react';
 import { Header, Layout, Footer, PokemonCard } from '../../components';
 
-// import database from '../../service/firebase';
-
 import bgImg1 from '../../assets/images/bg1.jpg';
 import bgImg3 from '../../assets/images/bg3.jpg';
 

@@ -1,26 +1,37 @@
 /* eslint-disable no-param-reassign */
-import { useContext, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { PokemonsContext } from '../../../../context/pokemonsContext';
-import { FireBaseContext } from '../../../../context/FireBaseContext';
 import { Btn, PokemonCard } from '../../../../components';
+import FirebaseClass from '../../../../service/firebase';
+import {
+	selectPlayer1Pokemons,
+	selectPlayer2Pokemons,
+	setPlayer1Pokemons,
+	setPlayer2Pokemons,
+} from '../../../../redux/pokemons';
 import css from './Finish.module.css';
 
 const Finish = () => {
-	const { player1Pokemons, player2Pokemons, setPlayer2Pokemons, clearContext } =
-		useContext(PokemonsContext);
-	const firebase = useContext(FireBaseContext);
 	const [rewardCard, setRewardCard] = useState({});
 	const history = useHistory();
+	const dispatch = useDispatch();
+	const player1Pokemons = useSelector(selectPlayer1Pokemons);
+	const player2Pokemons = useSelector(selectPlayer2Pokemons);
+	const [rewardPokemons, setRewardPokemons] = useState([]);
+
+	useEffect(() => {
+		setRewardPokemons(player2Pokemons);
+	}, []);
 
 	const isPlayer1Lost = player1Pokemons.length < player2Pokemons.length;
 
 	const handleCardClick = (id) => {
 		if (isPlayer1Lost) return;
 
-		const newState = [...player2Pokemons].map((item) => {
-			delete item.selected;
-			delete item.possession;
+		const newState = [...rewardPokemons].map((item) => {
+			if (item.selected) delete item.selected;
+
 			if (item.id === id) {
 				setRewardCard(item);
 				return { ...item, selected: true };
@@ -28,13 +39,17 @@ const Finish = () => {
 			return item;
 		});
 
-		setPlayer2Pokemons(newState);
+		setRewardPokemons(newState);
+	};
+
+	const clearStore = () => {
+		dispatch(setPlayer1Pokemons([]));
+		dispatch(setPlayer2Pokemons([]));
 	};
 
 	const handleFinishGameClick = async () => {
-		await firebase.postPokemon(rewardCard);
-
-		clearContext();
+		await FirebaseClass.postPokemon(rewardCard);
+		clearStore();
 		history.replace('/game');
 	};
 
@@ -63,7 +78,7 @@ const Finish = () => {
 				/>
 			</div>
 			<div className={css.herPokemonsWraper}>
-				{player2Pokemons.map(({ id, name, img, type, values, selected }) => (
+				{rewardPokemons.map(({ id, name, img, type, values, selected }) => (
 					<PokemonCard
 						className={css.card}
 						key={id}

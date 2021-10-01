@@ -1,15 +1,19 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-alert */
-/* eslint-disable no-plusplus */
 /* eslint-disable react/jsx-props-no-spreading */
-import { useContext, useEffect, useState } from 'react';
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-plusplus */
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { PokemonsContext } from '../../../../context/pokemonsContext';
+import { useSelector, useDispatch } from 'react-redux';
 import { PokemonCard, PlayerBoard, Result, ArrowChoice } from '../../../../components';
 import css from './Board.module.css';
+import {
+	selectSelectedPokemons,
+	setPlayer1Pokemons,
+	setPlayer2Pokemons,
+} from '../../../../redux/pokemons';
 
 const counterWin = (board, player1, player2) => {
-	let player1Count = player2.length;
+	let player1Count = player1.length;
 	let player2Count = player2.length;
 
 	board.forEach((item) => {
@@ -24,11 +28,12 @@ const counterWin = (board, player1, player2) => {
 };
 
 const BoardPage = () => {
-	const { pokemons, setPlayer1Pokemons, setPlayer2Pokemons } = useContext(PokemonsContext);
+	const dispatch = useDispatch();
+	const pokemons = useSelector(selectSelectedPokemons);
 
 	const [board, setBoard] = useState([]);
 	const [player1, setPlayer1] = useState(() =>
-		Object.values(pokemons).map((item) => ({
+		pokemons.map((item) => ({
 			...item,
 			possession: 'blue',
 		})),
@@ -74,7 +79,7 @@ const BoardPage = () => {
 		await animateArrow();
 	}, []);
 
-	if (Object.keys(pokemons).length === 0) {
+	if (pokemons.length === 0) {
 		history.replace('/game');
 	}
 
@@ -122,6 +127,7 @@ const BoardPage = () => {
 			const player2Pokemons = [];
 
 			board.forEach((item) => {
+				delete item.card.selected;
 				if (item.card.possession === 'blue') {
 					player1Pokemons.push(item.card);
 				}
@@ -130,8 +136,8 @@ const BoardPage = () => {
 				}
 			});
 
-			setPlayer1Pokemons(player1Pokemons);
-			setPlayer2Pokemons(player2Pokemons);
+			dispatch(setPlayer1Pokemons(player1Pokemons));
+			dispatch(setPlayer2Pokemons(player2Pokemons));
 
 			if (count1 > count2) {
 				setResult('win');

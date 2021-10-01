@@ -49,5 +49,6 @@ class Firebase {
 			.then(() => cb());
 	}
 }
+const FirebaseClass = new Firebase();
 
-export default Firebase;
+export default FirebaseClass;
