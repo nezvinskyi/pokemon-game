@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-plusplus */
 import { useEffect, useState } from 'react';
