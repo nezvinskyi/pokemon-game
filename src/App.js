@@ -1,16 +1,29 @@
 /* eslint-disable no-shadow */
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, Switch, Route, Redirect } from 'react-router-dom';
 import cn from 'classnames';
 import { NotificationContainer } from 'react-notifications';
 import { About, Contact, GamePage, HomePage, NotFound } from './routes';
 import { Footer, MenuHeader, PrivateRoute } from './components';
+import { getUserAsync, selectUserLoading } from './redux/user';
 
 import css from './App.module.css';
 import 'react-notifications/lib/notifications.css';
 
 const App = () => {
+	const isUserLoading = useSelector(selectUserLoading);
+	const dispatch = useDispatch();
 	const location = useLocation('/');
 	const isPadding = location.pathname === '/' || location.pathname === '/game/board';
+
+	useEffect(() => {
+		dispatch(getUserAsync());
+	}, []);
+
+	if (isUserLoading) {
+		return '...loading';
+	}
 
 	return (
 		<>
