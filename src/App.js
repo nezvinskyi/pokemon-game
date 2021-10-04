@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, Switch, Route, Redirect } from 'react-router-dom';
 import cn from 'classnames';
 import { NotificationContainer } from 'react-notifications';
-import { About, Contact, GamePage, HomePage, NotFound } from './routes';
+import { About, Contact, GamePage, HomePage, NotFound, User } from './routes';
 import { Footer, MenuHeader, PrivateRoute } from './components';
 import { getUserAsync, selectUserLoading } from './redux/user';
 
@@ -39,6 +39,7 @@ const App = () => {
 								<PrivateRoute path="/game" component={GamePage} />
 								<PrivateRoute path="/about" component={About} />
 								<Route path="/contact" component={Contact} />
+								<Route path="/user" component={User} />
 								<Route render={() => <Redirect to="/404" />} />
 							</Switch>
 						</div>

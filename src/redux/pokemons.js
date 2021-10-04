@@ -74,12 +74,10 @@ export const getPokemonsAsync = () => async (dispatch, getState) => {
 	try {
 		const localId = selectLocalId(getState());
 		dispatch(fetchPokemons());
-		// const data = await FirebaseClass.getPokemonsOnce();
 
 		const data = await fetch(
 			`https://pokemon-game-46d0b-default-rtdb.europe-west1.firebasedatabase.app/${localId}/pokemons.json`,
 		).then((res) => res.json());
-		console.log('data :>> ', data);
 		dispatch(fetchPokemonsResolve(data));
 	} catch (error) {
 		dispatch(fetchPokemonsReject(error));
