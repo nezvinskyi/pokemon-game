@@ -15,10 +15,11 @@ const GamePage = () => {
 		<Switch>
 			<PrivateRoute path={`${match.path}/`} exact component={StartPage} />
 			<PrivateRoute path={`${match.path}/board`} component={BoardPage} />
-			<PrivateRoute
-				path={`${match.path}/finish`}
-				render={() => (gameOver ? <FinishPage /> : <Redirect to={`${match.path}/`} />)}
-			/>
+			{gameOver ? (
+				<PrivateRoute path={`${match.path}/finish`} component={FinishPage} />
+			) : (
+				<Redirect to={`${match.path}/`} />
+			)}
 		</Switch>
 	);
 };

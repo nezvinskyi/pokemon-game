@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Btn, PokemonCard } from '../../../../components';
-import FirebaseClass from '../../../../service/firebase';
+import { selectLocalId } from '../../../../redux/user';
+// import FirebaseClass from '../../../../service/firebase';
 import {
 	selectPlayer1Pokemons,
 	selectPlayer2Pokemons,
@@ -13,6 +14,7 @@ import {
 import css from './Finish.module.css';
 
 const Finish = () => {
+	const localId = useSelector(selectLocalId);
 	const [rewardCard, setRewardCard] = useState({});
 	const history = useHistory();
 	const dispatch = useDispatch();
@@ -48,7 +50,14 @@ const Finish = () => {
 	};
 
 	const handleFinishGameClick = async () => {
-		await FirebaseClass.postPokemon(rewardCard);
+		const idToken = localStorage.getItem('idToken');
+		await fetch(
+			`https://pokemon-game-46d0b-default-rtdb.europe-west1.firebasedatabase.app/${localId}/pokemons.json?auth=${idToken}`,
+			{
+				method: 'POST',
+				body: JSON.stringify(rewardCard),
+			},
+		);
 		clearStore();
 		history.replace('/game');
 	};
