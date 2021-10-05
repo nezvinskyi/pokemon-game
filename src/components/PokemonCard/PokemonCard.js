@@ -13,6 +13,7 @@ const PokemonCard = ({
 	onClickCard,
 	isActive,
 	isSelected,
+	possession,
 }) => {
 	const handleClick = () => {
 		onClickCard && onClickCard(id);
@@ -27,7 +28,7 @@ const PokemonCard = ({
 		>
 			<div className={css.cardFront}>
 				<div className={cn(css.wrap, css.front)}>
-					<div className={cn(css.pokemon, css[type])}>
+					<div className={cn(css.pokemon, possession ? css[possession] : css[type])}>
 						<div className={css.values}>
 							<div className={cn(css.count, css.top)}>{values.top}</div>
 							<div className={cn(css.count, css.right)}>{values.right}</div>

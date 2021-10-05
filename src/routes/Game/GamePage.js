@@ -1,40 +1,26 @@
-import { useState } from 'react';
-import { Switch, Route, useRouteMatch } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Switch, useRouteMatch, Redirect } from 'react-router-dom';
 import { BoardPage, FinishPage, StartPage } from './routes';
-import { PokemonsContext } from '../../context/pokemonsContext';
+import { selectPlayer1Pokemons, selectPlayer2Pokemons } from '../../redux/pokemons';
+import { PrivateRoute } from '../../components';
 
 const GamePage = () => {
-	const [selectedPokemons, setSelectedPokemons] = useState({});
 	const match = useRouteMatch();
+	const player1Pokemons = useSelector(selectPlayer1Pokemons);
+	const player2Pokemons = useSelector(selectPlayer2Pokemons);
 
-	const handleSelectedPokemons = (key, pokemon) => {
-		setSelectedPokemons((prevState) => {
-			if (prevState[key]) {
-				const copyState = { ...prevState };
-				delete copyState[key];
-
-				return copyState;
-			}
-			return {
-				...prevState,
-				[key]: pokemon,
-			};
-		});
-	};
+	const gameOver = player1Pokemons.length + player2Pokemons.length === 9;
 
 	return (
-		<PokemonsContext.Provider
-			value={{
-				pokemons: selectedPokemons,
-				onSelectedPokemons: handleSelectedPokemons,
-			}}
-		>
-			<Switch>
-				<Route path={`${match.path}/`} exact component={StartPage} />
-				<Route path={`${match.path}/board`} component={BoardPage} />
-				<Route path={`${match.path}/finish`} component={FinishPage} />
-			</Switch>
-		</PokemonsContext.Provider>
+		<Switch>
+			<PrivateRoute path={`${match.path}/`} exact component={StartPage} />
+			<PrivateRoute path={`${match.path}/board`} component={BoardPage} />
+			{gameOver ? (
+				<PrivateRoute path={`${match.path}/finish`} component={FinishPage} />
+			) : (
+				<Redirect to={`${match.path}/`} />
+			)}
+		</Switch>
 	);
 };
 

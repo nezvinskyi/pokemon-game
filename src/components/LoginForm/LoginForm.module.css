@@ -1,0 +1,11 @@
+.wrapper {
+	display: flex;
+	align-items: center;
+}
+
+.loginRegisterToggle {
+	margin-left: auto;
+	color: #f300b4;
+	font-size: 30px;
+	cursor: pointer;
+}
