@@ -8,11 +8,11 @@ const PlayerBoard = ({ player, cards, onClickCard }) => {
 	return (
 		<>
 			{cards.map((card) => {
-				const { name, id, type, values, img } = card;
+				const { name, id, type, values, img, active } = card;
 				return (
 					<div
 						key={id}
-						className={cn(css.cardBoard, { [css.selected]: isSelected === id })}
+						className={cn(css.cardBoard, { [css.active]: active || isSelected === id })}
 						onClick={() => {
 							setSelected(id);
 							onClickCard &&
@@ -29,7 +29,7 @@ const PlayerBoard = ({ player, cards, onClickCard }) => {
 							values={values}
 							img={img}
 							minimize
-							isActive
+							front
 						/>
 					</div>
 				);

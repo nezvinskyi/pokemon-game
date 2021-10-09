@@ -13,3 +13,5 @@ ReactDOM.render(
 	</Provider>,
 	document.getElementById('root'),
 );
+//  TODO login on Start click
+//  TODO login instead of register

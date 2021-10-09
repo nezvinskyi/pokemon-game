@@ -9,6 +9,6 @@
 	margin-top: 0;
 }
 
-.cardBoard.selected {
+.cardBoard.active {
 	margin-left: -20px;
 }

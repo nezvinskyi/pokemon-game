@@ -11,7 +11,7 @@ const PokemonCard = ({
 	img,
 	minimize,
 	onClickCard,
-	isActive,
+	front,
 	isSelected,
 	possession,
 }) => {
@@ -21,7 +21,7 @@ const PokemonCard = ({
 	return (
 		<div
 			className={cn(className, css.pokemonCard, {
-				[css.active]: isActive,
+				[css.active]: front,
 				[css.selected]: isSelected,
 			})}
 			onClick={handleClick}

@@ -19,7 +19,7 @@ const User = () => {
 		history.push('/');
 	};
 
-	const toLocalTime = (timestamp) => new Date(timestamp).toLocaleString('uk-UA');
+	const toLocalTime = (timestamp) => new Date(timestamp).toLocaleDateString('uk-UA');
 
 	return (
 		<>
