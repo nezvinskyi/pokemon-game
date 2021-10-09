@@ -73,7 +73,7 @@ const StartPage = () => {
 									handleCardClick(key);
 								}
 							}}
-							isActive={true}
+							front={true}
 							isSelected={selected}
 						/>
 					))}

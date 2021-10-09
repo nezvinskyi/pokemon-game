@@ -74,7 +74,7 @@ const Finish = () => {
 						type={type}
 						values={values}
 						img={img}
-						isActive
+						front
 						isSelected={selected}
 					/>
 				))}
@@ -96,7 +96,7 @@ const Finish = () => {
 						type={type}
 						values={values}
 						img={img}
-						isActive
+						front
 						onClickCard={() => {
 							handleCardClick(id);
 						}}

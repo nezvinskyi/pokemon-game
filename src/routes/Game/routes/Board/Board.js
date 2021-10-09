@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-plusplus */
 import { useEffect, useState } from 'react';
@@ -10,21 +11,8 @@ import {
 	setPlayer1Pokemons,
 	setPlayer2Pokemons,
 } from '../../../../redux/pokemons';
-
-const counterWin = (board, player1, player2) => {
-	let player1Count = player1.length;
-	let player2Count = player2.length;
-
-	board.forEach((item) => {
-		if (item.card.possession === 'red') {
-			player2Count++;
-		}
-		if (item.card.possession === 'blue') {
-			player1Count++;
-		}
-	});
-	return [player1Count, player2Count];
-};
+import request from '../../../../service/request';
+import { returnBoard, counterWin } from '../../../../utils/helpers';
 
 const BoardPage = () => {
 	const dispatch = useDispatch();
@@ -43,31 +31,35 @@ const BoardPage = () => {
 	const [result, setResult] = useState(null);
 	const [side, setSide] = useState(0);
 	const [stop, setStop] = useState(false);
+	const [serverBoard, setServerBoard] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
 
 	const history = useHistory();
 
 	const animateArrow = () => {
-		let selectSide = null;
+		setSide(1);
+		// let selectSide = null;
 
-		setTimeout(() => {
-			clearInterval(selectSide);
-		}, 3000);
+		// setTimeout(() => {
+		// 	clearInterval(selectSide);
+		// }, 3000);
 
-		selectSide = setInterval(async () => {
-			if (Math.random() < 0.5) {
-				await setSide(1);
-			} else await setSide(2);
-		}, 500);
+		// selectSide = setInterval(async () => {
+		// 	if (Math.random() < 0.5) {
+		// 		await setSide(1);
+		// 	} else await setSide(2);
+		// }, 500);
 	};
 
 	useEffect(async () => {
-		const boardResponse = await fetch('https://reactmarathon-api.netlify.app/api/board');
-		const boardRequest = await boardResponse.json();
+		// const boardResponse = await fetch('https://reactmarathon-api.netlify.app/api/board');
+		const boardRequest = await request.getBoard();
 
 		setBoard(boardRequest.data);
 
-		const player2Response = await fetch('https://reactmarathon-api.netlify.app/api/create-player');
-		const player2Request = await player2Response.json();
+		// const player2Response = await fetch('https://reactmarathon-api.netlify.app/api/create-player');
+		const player2Request = await request.gameStart({
+			pokemons: Object.values(pokemons),
+		});
 
 		setPlayer2(() =>
 			player2Request.data.map((item) => ({
@@ -83,34 +75,70 @@ const BoardPage = () => {
 	}
 
 	const handleClickBoardPlate = async (position) => {
-		if (choiceCard) {
+		if (typeof choiceCard === 'object') {
 			const params = {
-				position,
-				card: choiceCard,
-				board,
-			};
-
-			const res = await fetch('https://reactmarathon-api.netlify.app/api/players-turn', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
+				currentPlayer: 'p1',
+				hands: {
+					p1: player1,
+					p2: player2,
 				},
-				body: JSON.stringify(params),
-			});
-
-			const request = await res.json();
+				move: {
+					poke: {
+						...choiceCard,
+					},
+					position,
+				},
+				// card: choiceCard,
+				board: serverBoard,
+			};
+			console.log('serverBoard :>> ', serverBoard);
 
 			if (choiceCard.player === 1) {
 				setPlayer1((prevState) => prevState.filter((item) => item.id !== choiceCard.id));
 			}
 
-			if (choiceCard.player === 2) {
-				setPlayer2((prevState) => prevState.filter((item) => item.id !== choiceCard.id));
-			}
+			setBoard((prevState) =>
+				prevState.map((item) => {
+					if (item.position === position) {
+						return {
+							...item,
+							card: choiceCard,
+						};
+					}
+					return item;
+				}),
+			);
 
-			setBoard(request.data);
+			const game = await request.game(params);
+			console.log('game :>> ', game);
+			setBoard(returnBoard(game.oldBoard));
+
 			setSteps((prevState) => prevState + 1);
-			setChoiceCard(null);
+			// setChoiceCard(null);
+
+			if (game.move !== null) {
+				const idAi = game.move.poke.id;
+
+				setTimeout(() => {
+					setPlayer2((prevState) =>
+						prevState.map((item) => {
+							if (item.id === idAi) {
+								return {
+									...item,
+									active: true,
+								};
+							}
+							return item;
+						}),
+					);
+				}, 1000);
+
+				setTimeout(() => {
+					setPlayer2(() => game.hands.p2.pokes.map((item) => item.poke));
+					setServerBoard(game.board);
+					setBoard(returnBoard(game.board));
+				}, 1500);
+			}
 		}
 	};
 
@@ -168,7 +196,7 @@ const BoardPage = () => {
 						className={css.boardPlate}
 						onClick={() => !item.card && handleClickBoardPlate(item.position)}
 					>
-						{item.card && <PokemonCard {...item.card} isActive minimize />}
+						{item.card && <PokemonCard {...item.card} front minimize />}
 					</div>
 				))}
 			</div>
